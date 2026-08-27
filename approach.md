@@ -278,12 +278,13 @@ Example:
 evaluation/
 └── runs/
 └── 2026-08-26_15-30-00/
-```Show more lines```
+```
 
 All outputs generated during an experiment are stored beneath this run directory.
 
 Example:
-```
+
+```text
 evaluation/
 └── runs/
     └── 2026-08-26_15-30-00/
