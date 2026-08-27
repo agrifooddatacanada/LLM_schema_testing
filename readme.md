@@ -2,24 +2,207 @@
 
 ## Setup
 
-Create a virtual environment:
+### 1. Verify Python Installation
 
+Windows:
+
+```powershell
+python --version
+```
+
+Mac/Linux:
+
+```bash
+python3 --version
+```
+
+If Python is installed correctly, a version number should be displayed.
+
+---
+
+### 2. Create a Virtual Environment
+
+Windows:
+
+```powershell
 python -m venv .venv
+```
 
-Activate it:
+Mac/Linux:
 
+```bash
+python3 -m venv .venv
+```
+
+---
+
+### 3. Activate the Virtual Environment
+
+Windows:
+
+```powershell
 .venv\Scripts\activate
+```
 
-Install dependencies:
+Mac/Linux:
 
+```bash
+source .venv/bin/activate
+```
+
+Your command prompt should now indicate that the virtual environment is active.
+
+---
+
+### 4. Install Dependencies
+
+Windows:
+
+```powershell
 pip install -r requirements.txt
+```
 
-Create a .env file from .env.example.
+Mac/Linux:
 
-Run:
+```bash
+pip3 install -r requirements.txt
+```
 
+---
+
+### 5. Configure Environment Variables
+
+Create a `.env` file from `.env.example` and populate the required values.
+
+Example:
+
+```text
+ANTHROPIC_API_KEY=...
+ANTHROPIC_BASE_URL=...
+ANTHROPIC_MODEL=...
+```
+
+---
+
+### 6. Run an Experiment
+
+Windows:
+
+```powershell
 python -m evaluation.run_experiment
+```
+
+Mac/Linux:
+
+```bash
+python3 -m evaluation.run_experiment
+```
+
+Experiment outputs will be written to a timestamped directory under:
+
+```text
+evaluation/runs/
+```
+
+---
+
+## Project Structure
+
+```text
+project/
+│
+├── data/
+│   ├── input/
+│   ├── intermediate/
+│   └── output/
+│
+├── prompts/
+│
+├── evaluation/
+│   ├── datasets/
+│   ├── runs/
+│   └── run_experiment.py
+│
+├── src/
+│
+├── .env.example
+├── requirements.txt
+└── README.md
+```
+
+---
 
 ## Approach
 
-The entire [approach is documented](approach.md) and can be entered into an LLM for context.
+The complete project approach is documented in:
+
+```text
+approach.md
+```
+
+This document describes:
+
+- architectural goals
+- data models
+- pipeline stages
+- experiment framework
+- future OCA-oriented workflows
+
+It can be provided directly to an LLM as project context.
+
+---
+
+## Troubleshooting
+
+### Recreate the Virtual Environment
+
+If dependencies become corrupted or inconsistent:
+
+Windows:
+
+```powershell
+rmdir /s /q .venv
+python -m venv .venv
+```
+
+Mac/Linux:
+
+```bash
+rm -rf .venv
+python3 -m venv .venv
+```
+
+Then reinstall:
+
+```bash
+pip install -r requirements.txt
+```
+
+or
+
+```bash
+pip3 install -r requirements.txt
+```
+
+### Verify Environment Variables
+
+You can verify that your `.env` file is being loaded correctly:
+
+```bash
+python -m src.test_llm_connection
+```
+
+or
+
+```bash
+python3 -m src.test_llm_connection
+```
+
+Expected output should resemble:
+
+```text
+API_KEY loaded: True
+BASE_URL = 'https://...'
+MODEL = '...'
+Connection successful
+```

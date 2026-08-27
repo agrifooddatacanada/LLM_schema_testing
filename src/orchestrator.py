@@ -11,6 +11,19 @@ from src.extract.save_tabular_profile import save_tabular_profile
 from src.extract.save_matches import save_matches
 from src.models_pipeline import PipelineResult
 
+def ensure_directories() -> None:
+    required_dirs = [
+        Path("data") / "intermediate",
+        Path("data") / "output",
+    ]
+
+    for directory in required_dirs:
+        directory.mkdir(
+            parents=True,
+            exist_ok=True
+        )
+
+
 def run_pipeline(
     tabular_file: str,
     readme_file: str,
@@ -19,6 +32,8 @@ def run_pipeline(
     output_dir: Path,
 ) -> None:
 
+    ensure_directories()
+    
     # get information about the tabular data file
     tabular_profile = profile_tabular(tabular_file)
 
