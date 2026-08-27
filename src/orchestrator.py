@@ -99,7 +99,7 @@ def run_pipeline(
 
 if __name__ == "__main__":
     run_pipeline(
-        r"data\input\test_data\cfia_vibrio_data_public.csv",
-        r"data\input\test_data\READMEvib.txt",
+        Path("data") / "input" / "test_data" / "cfia_vibrio_data_public.csv",
+        Path("data") / "input" / "test_data" / "READMEvib.txt",
         output_dir=Path("data/intermediate")
-        )
+    )
