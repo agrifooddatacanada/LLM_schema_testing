@@ -1,0 +1,39 @@
+# Ignore all input datasets
+data/input/*
+
+# But keep test data
+!data/input/test_data/
+!data/input/test_data/**
+
+# Ignore all datasets
+evaluation/datasets/*
+
+# Keep test_data and its contents
+!evaluation/datasets/test_data/
+!evaluation/datasets/test_data/**
+
+
+# Ignore generated files
+data/intermediate/
+data/output/
+
+# Virtual environments
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+
+# Secrets
+.env
+
+# VS Code
+.vscode/
+
+# Experiment outputs
+evaluation/runs/
+
+# OS files
+.DS_Store
+Thumbs.db
