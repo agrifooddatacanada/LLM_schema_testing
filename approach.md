@@ -237,6 +237,3 @@ Next priorities:
 Research question:
 
 > Can heterogeneous README documentation be transformed into structured, traceable metadata suitable for downstream OCA generation?
-
-This is probably closer to 3-5 pages instead of 25+, and future contributors are much more likely to read it.
-
