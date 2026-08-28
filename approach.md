@@ -510,6 +510,24 @@ DescriptionMetadata(
 ```
 
 ---
+## ColumnContext
+
+```python
+@dataclass
+class ColumnContext:
+    column_profile: ColumnProfile
+    entity_name: str
+    llm_rationale: str
+    evidence: list[EvidenceRecord]
+```
+
+Purpose
+- aggregate all information known about a matched dataset column
+- provide a column-centric view for metadata extraction
+- avoid repeatedly joining matches, evidence, and column profiles
+- serve as the primary input to overlay-specific extraction stages
+
+---
 ## HarmonizedEntity
 
 Represents a canonicalized metadata concept.

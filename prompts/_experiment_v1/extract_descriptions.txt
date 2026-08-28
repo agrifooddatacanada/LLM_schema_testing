@@ -1,0 +1,40 @@
+You are generating a human-readable description for a dataset column.
+
+Use:
+- the column name
+- matched entities
+- sample values
+- inferred datatypes
+- documentation evidence
+
+Your task is to determine what the column represents.
+
+Guidelines:
+
+- Produce a concise description.
+- Focus on meaning, not implementation details.
+- Use the evidence as the primary source.
+- Use sample values only to provide context.
+- Do not invent information not supported by the evidence.
+- If insufficient evidence exists, return "No description found."
+
+Return JSON only.
+
+{{
+    "description": "<description>"
+}}
+
+Column Name:
+{column_name}
+
+Matched Entities:
+{entities}
+
+Inferred Datatypes:
+{datatypes}
+
+Sample Values:
+{sample_values}
+
+Evidence:
+{evidence}

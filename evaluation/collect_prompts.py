@@ -16,6 +16,10 @@ def get_prompt_sets() -> list:
 
         if not folder.is_dir():
             continue
+        
+        if folder.name.startswith("_"):
+            print(f"Skipping prompt set: {folder.name}")
+            continue
 
         missing = [
             filename

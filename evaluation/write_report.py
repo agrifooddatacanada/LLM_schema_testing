@@ -1,6 +1,7 @@
 import re
 from pathlib import Path
 from src.models_pipeline import PipelineResult
+from evaluation.markdown_utils import escape_markdown
 
 def safe_filename(text: str) -> str:
     return re.sub(
@@ -20,8 +21,8 @@ def write_report(
 
     lines.append("# Experiment Report")
     lines.append("")
-    lines.append(f"Dataset: {dataset_name}")
-    lines.append(f"Prompt Set: {prompt_set}")
+    lines.append(f"Dataset: {escape_markdown(dataset_name)}")
+    lines.append(f"Prompt Set: {escape_markdown(prompt_set)}")
     lines.append("")
 
     lines.append("## Summary")
@@ -36,7 +37,7 @@ def write_report(
     lines.append("")
 
     for entity in result.entities:
-        lines.append(f"- {entity.name}")
+        lines.append(f"- {escape_markdown(entity.name)}")
     
     lines.append("")
     lines.append("## Matches")
@@ -46,10 +47,8 @@ def write_report(
         column_name = match.column_name or "[NO MATCH]"
 
         lines.append(
-            f"- {match.entity_name} -> {column_name}"
+            f"- {escape_markdown(match.entity_name)} -> {escape_markdown(column_name)}"
         )
-
-    lines.append("")
 
     lines.append("")
     lines.append("## Unmatched Entities")
@@ -60,40 +59,40 @@ def write_report(
         if match.column_name is None:
 
             lines.append(
-                f"- {match.entity_name}"
+                f"- {escape_markdown(match.entity_name)}"
             )
 
     lines.append("")
 
-    lines.append("")
     lines.append("## Match Rationales")
     lines.append("")
 
     for match in result.matches:
 
         lines.append(
-            f"### {match.entity_name}"
+            f"### {escape_markdown(match.entity_name)}"
         )
 
         lines.append("")
 
         lines.append(
-            f"Matched Column: {match.column_name}"
+            f"Matched Column: "
+            f"{escape_markdown(match.column_name or '[NO MATCH]')}"
         )
 
         lines.append("")
 
-        lines.append(match.llm_rationale)
+        lines.append(escape_markdown(match.llm_rationale))
 
         lines.append("")
 
-    lines.append("")
+
     lines.append("## Evidence")
     lines.append("")
 
     for entity in result.entities:
 
-        lines.append(f"### {entity.name}")
+        lines.append(f"### {escape_markdown(entity.name)}")
         lines.append("")
 
         for evidence in result.evidence:
@@ -101,7 +100,7 @@ def write_report(
             if evidence.entity_name == entity.name:
 
                 lines.append(
-                    f"- {evidence.evidence_text}"
+                    f"- {escape_markdown(evidence.evidence_text)}"
                 )
 
         lines.append("")

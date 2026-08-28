@@ -10,6 +10,8 @@ from src.extract.save_readme_profile import save_readme_profile
 from src.extract.save_tabular_profile import save_tabular_profile
 from src.extract.save_matches import save_matches
 from src.models_pipeline import PipelineResult
+from src.extract.build_column_contexts import build_column_contexts
+from src.extract.models_column_context import ColumnContext
 
 def ensure_directories() -> None:
     required_dirs = [
@@ -30,7 +32,7 @@ def run_pipeline(
     *,
     prompt_set: str="baseline",
     output_dir: Path,
-) -> None:
+) -> PipelineResult:
 
     ensure_directories()
     
@@ -82,13 +84,13 @@ def run_pipeline(
         output_dir / "evidence.json"
     )
 
-    print("\nEvidence found:")
+    #print("\nEvidence found:")
 
-    for evidence in all_evidence:
-        print("\n---")
-        print("Entity:", evidence.entity_name)
-        print("Evidence Text:", evidence.evidence_text)
-        print("Evidence Section:", evidence.source_section)
+    #for evidence in all_evidence:
+        #print("\n---")
+        #print("Entity:", evidence.entity_name)
+        #print("Evidence Text:", evidence.evidence_text)
+        #print("Evidence Section:", evidence.source_section)
 
     # This code takes entities and tabular profile extracted from the data table
     # and matches them to entities extracted from the readme text file
@@ -105,10 +107,17 @@ def run_pipeline(
         output_dir / "matches.json"
     )
 
+    contexts = build_column_contexts(
+        matches,
+        all_evidence,
+        tabular_profile,
+    )
+
     return PipelineResult(
         entities=entities,
         evidence=all_evidence,
         matches=matches,
+        contexts=contexts,
     )
 
 

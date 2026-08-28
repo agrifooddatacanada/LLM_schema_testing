@@ -68,10 +68,9 @@ def match_entities(
             evidence_used=entity_evidence,
         )
 
-
-        print(f"Matched entity: {entity.name}")
-        print(f"Column selected: {column_data['column_name']}")
-        print(f"Rationale: {column_data['rationale']}")
+        #print(f"Matched entity: {entity.name}")
+        #print(f"Column selected: {column_data['column_name']}")
+        #print(f"Rationale: {column_data['rationale']}")
 
         all_matches.append(
             match
