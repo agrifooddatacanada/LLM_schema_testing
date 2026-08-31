@@ -2,6 +2,7 @@ from pathlib import Path
 from src.llm.load_prompt import load_prompt
 from src.extract.models_evidence import EvidenceRecord
 from src.llm.client import llm_generate
+from evaluation.models_experiment_config import ExperimentConfig
 from src.extract.json_utils import parse_json_response
 
 def collect_evidence(
@@ -10,6 +11,7 @@ def collect_evidence(
     *,
     prompt_set: str,
     output_dir,
+    experiment_config: ExperimentConfig
 ) -> list:
 
     all_evidence=[]
@@ -29,8 +31,10 @@ def collect_evidence(
         print(f"\nSending to LLM for entity: {entity.name}")
         response=llm_generate(
             prompt,
+            model=experiment_config.model,
+            temperature=experiment_config.temperature,
             max_tokens=1000
-        )
+            )
 
         try:
             evidence_data = parse_json_response(response)

@@ -4,6 +4,10 @@ REQUIRED_PROMPTS = [
     "discover_entities.txt",
     "extract_evidence.txt",
     "matching_entities.txt",
+    "extract_attributes.txt",
+    "extract_units.txt",
+    "extract_descriptions.txt",
+    "extract_datatypes.txt"
 ]
 
 def get_prompt_sets() -> list:

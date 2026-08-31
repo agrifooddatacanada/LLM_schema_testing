@@ -1,36 +1,34 @@
 from src.extract.models_column_context import ColumnContext
-from src.metadata.models_unit import UnitMetadata
+from src.metadata.models_datatype import DatatypeMetadata
 
 from src.extract.json_utils import parse_json_response
 from src.llm.client import llm_generate
 from src.llm.load_prompt import load_prompt
 from evaluation.models_experiment_config import ExperimentConfig
 
-def extract_units(
+ALLOWED_DATATYPES = {
+    "Text",
+    "Numeric",
+    "Boolean",
+    "BinaryFile",
+    "DateTime",
+}
+
+def extract_datatypes(
     contexts: list[ColumnContext],
     *,
     prompt_set: str,
-    experiment_config: ExperimentConfig
-    ) -> list [UnitMetadata]:
-    
+    experiment_config: ExperimentConfig,
+) -> list[DatatypeMetadata]:
+
     template = load_prompt(
         prompt_set,
-        "extract_units.txt",
-    )
+        "extract_datatypes.txt",
+        )
 
-    units = []
+    results = []
 
     for context in contexts:
-
-        evidence_text = "\n\n".join(
-            record.evidence_text
-            for record in context.evidence
-        )
-
-        matched_entities = "\n".join(
-            match.entity_name
-            for match in context.matches
-        )
 
         sample_values = "\n".join(
             str(value)
@@ -39,12 +37,10 @@ def extract_units(
 
         prompt = template.format(
             column_name=context.column_profile.column_name,
-            entities=matched_entities,
             sample_values=sample_values,
             datatypes=", ".join(
                 context.column_profile.inferred_datatypes
             ),
-            evidence=evidence_text,
         )
 
         response = llm_generate(
@@ -54,13 +50,18 @@ def extract_units(
             max_tokens=300,
         )
 
-        unit_data = parse_json_response(response)
+        data = parse_json_response(response)
 
-        units.append(
-            UnitMetadata(
+        datatype=data.get("datatype","Text")
+
+        if datatype not in ALLOWED_DATATYPES:
+            datatype="Text"
+
+        results.append(
+            DatatypeMetadata(
                 column_name=context.column_profile.column_name,
-                unit=unit_data["unit"],
+                datatype=datatype,
+                ),
             )
-        )
 
-    return units
+    return results

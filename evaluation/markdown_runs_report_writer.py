@@ -1,5 +1,7 @@
 from pathlib import Path
+
 from evaluation.markdown_utils import escape_markdown
+
 
 def write_runs_report(
     results,
@@ -19,80 +21,97 @@ def write_runs_report(
     )
 
     for dataset_name in datasets:
-        lines.append("")
+
         lines.append(f"# Dataset: {escape_markdown(dataset_name)}")
         lines.append("")
 
         column_names = set()
 
-        # collect all columns for this dataset
         for result in results:
 
             if result.dataset_name != dataset_name:
                 continue
 
-            for description in result.metadata.descriptions:
-                column_names.add(description.column_name)
+            column_names.update(
+                attribute.column_name
+                for attribute in result.metadata.attributes
+            )
             
-            for unit in result.metadata.units:
-                column_names.add(unit.column_name)
-            
-        # generate report for each column
-        for column_name in sorted(column_names):
-            lines.append(f"## Column: {column_name}")
+            column_names.update(
+                description.column_name
+                for description in result.metadata.descriptions
+            )
 
+            column_names.update(
+                unit.column_name
+                for unit in result.metadata.units
+            )
+
+            column_names.update(
+                datatype.column_name
+                for datatype in result.metadata.datatypes
+            )
+
+        for column_name in sorted(column_names):
+
+            lines.append(
+                f"## Column: {escape_markdown(column_name)}"
+            )
             lines.append("")
-            lines.append("### Descriptions")
-            lines.append("")
-            lines.append("| Prompt Set | Description |")
-            lines.append("|------------|-------------|")
-            
-            
+
+            lines.append(
+                "| Config | Model | Temperature | Prompt Set | Attribute | Description | Unit | Datatype |"
+            )
+            lines.append(
+                "|--------|-------|-----|------------|-----------|-------------|------|----------|"
+            )
+
             for result in results:
 
                 if result.dataset_name != dataset_name:
                     continue
 
                 description_text = ""
+                unit_text = ""
+                datatype_text = ""
+                attribute_text = ""
+
+                
+                for attribute in result.metadata.attributes:
+                    if attribute.column_name == column_name:
+                        attribute_text = attribute.attribute
+                        break
 
                 for description in result.metadata.descriptions:
-
                     if description.column_name == column_name:
-                        description_text = (
-                            description.description
-                        )
+                        description_text = description.description
+                        break
+
+                for unit in result.metadata.units:
+                    if unit.column_name == column_name:
+                        unit_text = unit.unit
+                        break
+
+                for datatype in result.metadata.datatypes:
+                    if datatype.column_name == column_name:
+                        datatype_text = datatype.datatype
                         break
 
                 lines.append(
-                    f"| {result.prompt_set} | "
-                    f"{description_text} |"
+                    f"| {escape_markdown(result.experiment_config.name)} "
+                    f"| {escape_markdown(result.experiment_config.model)} "
+                    f"| {result.experiment_config.temperature} "
+                    f"| {escape_markdown(result.prompt_set)} "
+                    f"| {escape_markdown(attribute_text)} "
+                    f"| {escape_markdown(description_text)} "
+                    f"| {escape_markdown(unit_text)} "
+                    f"| {escape_markdown(datatype_text)} |"
                 )
-                
-            lines.append("")
-            lines.append("### Units")
-            lines.append("")
-            lines.append("| Prompt Set | Unit |")
-            lines.append("|------------|------|")
 
-            for result in results:
-
-                if result.dataset_name != dataset_name:
-                    continue
-
-                unit_text = ""
-
-                for unit in result.metadata.units:
-
-                    if unit.column_name == column_name:
-                        unit_text = unit.unit
-
-                lines.append(
-                    f"| {result.prompt_set} | "
-                    f"{unit_text} |"
-                )
             lines.append("")
             lines.append("---")
             lines.append("")
+
     report_file.write_text(
         "\n".join(lines),
         encoding="utf-8",

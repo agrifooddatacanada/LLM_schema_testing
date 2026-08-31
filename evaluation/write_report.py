@@ -2,6 +2,7 @@ import re
 from pathlib import Path
 from src.models_pipeline import PipelineResult
 from evaluation.markdown_utils import escape_markdown
+from evaluation.models_experiment_config import ExperimentConfig
 
 def safe_filename(text: str) -> str:
     return re.sub(
@@ -15,6 +16,7 @@ def write_report(
     dataset_name: str,
     prompt_set: str,
     report_file: Path,
+    experiment_config: ExperimentConfig
 ) -> None:
 
     lines = []
@@ -23,6 +25,12 @@ def write_report(
     lines.append("")
     lines.append(f"Dataset: {escape_markdown(dataset_name)}")
     lines.append(f"Prompt Set: {escape_markdown(prompt_set)}")
+    lines.append("")
+
+    lines.append("## Experiment Configuration")
+    lines.append(f"- Config: {experiment_config.name}")
+    lines.append(f"- Model: {experiment_config.model}")
+    lines.append(f"- Temperature: {experiment_config.temperature}")
     lines.append("")
 
     lines.append("## Summary")

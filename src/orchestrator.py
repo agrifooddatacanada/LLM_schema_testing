@@ -1,6 +1,7 @@
 from pathlib import Path
 from src.ingest.tabular import profile_tabular
 from src.ingest.readme import profile_readme
+from evaluation.models_experiment_config import ExperimentConfig
 from src.extract.collect_entities import collect_entities
 from src.extract.collect_evidence import collect_evidence
 from src.extract.match_entities import match_entities
@@ -27,11 +28,12 @@ def ensure_directories() -> None:
 
 
 def run_pipeline(
+    *,
     tabular_file: str,
     readme_file: str,
-    *,
     prompt_set: str="baseline",
     output_dir: Path,
+    experiment_config: ExperimentConfig,
 ) -> PipelineResult:
 
     ensure_directories()
@@ -58,6 +60,7 @@ def run_pipeline(
         readme_profile,
         tabular_profile,
         prompt_set=prompt_set,
+        experiment_config=experiment_config,
     )
 
     save_entities(
@@ -77,6 +80,7 @@ def run_pipeline(
         entities,
         prompt_set=prompt_set,
         output_dir=output_dir,
+        experiment_config=experiment_config,
     )
 
     save_evidence(
@@ -100,6 +104,7 @@ def run_pipeline(
         tabular_profile,
         prompt_set=prompt_set,
         output_dir=output_dir,
+        experiment_config=experiment_config,
     )
 
     save_matches(
@@ -125,5 +130,6 @@ if __name__ == "__main__":
     run_pipeline(
         Path("data") / "input" / "test_data" / "cfia_vibrio_data_public.csv",
         Path("data") / "input" / "test_data" / "READMEvib.txt",
-        output_dir=Path("data/intermediate")
+        output_dir=Path("data/intermediate"),
+        experiment_config=experiment_config,
     )

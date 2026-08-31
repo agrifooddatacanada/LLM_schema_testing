@@ -8,6 +8,10 @@ from dataclasses import asdict
 
 from src.ingest.tabular_models import ColumnProfile, TabularProfile
 
+import datetime as dt
+import re
+from typing import List, Sequence
+
 def _normalize_header_name(name: str) -> str:
     """Normalize a CSV header to a stable, human-friendly identifier."""
     normalized = str(name).lstrip("\ufeff").strip()
@@ -22,38 +26,57 @@ def _normalize_cell_value(value: object) -> str:
     return " ".join(normalized.split()) if normalized else ""
 
 
+_NUMERIC_PATTERN = re.compile(r"^-?\d+(\.\d+)?$")
+
+def _is_iso_datetime(value: str) -> bool:
+    try:
+        dt.datetime.fromisoformat(value)
+        return True
+    except ValueError:
+        try:
+            dt.date.fromisoformat(value)
+            return True
+        except ValueError:
+            return False
+
+def _is_oca_numeric(value: str) -> bool:
+    """True only for plain numeric values."""
+    return bool(_NUMERIC_PATTERN.fullmatch(value))
+
+
 def infer_datatype_candidates(values: Sequence[str]) -> List[str]:
-    """Infer a very small set of datatype candidates for a column."""
-    cleaned = [value.strip() for value in values if value is not None and str(value).strip() != ""]
+    """Infer OCA datatype candidates for a column."""
+
+    cleaned = [
+        str(value).strip()
+        for value in values
+            if value is not None and str(value).strip()
+    ]
 
     if not cleaned:
         return ["Text"]
 
-    numeric_values = []
-    for value in cleaned:
-        try:
-            float(value)
-            numeric_values.append(value)
-        except ValueError:
-            pass
+    # Boolean
+    if all(value.lower() in {"true", "false"} for value in cleaned):
+        return ["Boolean"]
 
-    if len(numeric_values) == len(cleaned):
-        return ["Numeric"]
-
-    date_like_values = 0
-    for value in cleaned:
-        try:
-            import datetime as dt
-
-            dt.datetime.fromisoformat(value)
-            date_like_values += 1
-        except ValueError:
-            pass
-
-    if date_like_values == len(cleaned):
+    # DateTime (strict ISO parsing)
+    if all(_is_iso_datetime(value) for value in cleaned):
         return ["DateTime", "Text"]
 
+    # Numeric (strict OCA numeric definition)
+    if all(_is_oca_numeric(value) for value in cleaned):
+        return ["Numeric"]
+
     return ["Text"]
+
+
+def _is_iso_datetime(value: str) -> bool:
+    try:
+        dt.datetime.fromisoformat(value)
+        return True
+    except ValueError:
+        return False
 
 
 def profile_csv(csv_path: str | Path, output_path: str | Path | None = None) -> TabularProfile:

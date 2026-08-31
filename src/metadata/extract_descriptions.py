@@ -4,12 +4,14 @@ from src.metadata.models_description import DescriptionMetadata
 from src.extract.json_utils import parse_json_response
 from src.llm.client import llm_generate
 from src.llm.load_prompt import load_prompt
+from evaluation.models_experiment_config import ExperimentConfig
 
 
 def extract_descriptions(
     contexts: list[ColumnContext],
     *,
     prompt_set: str,
+    experiment_config: ExperimentConfig
     ) -> list[DescriptionMetadata]:
     
     template = load_prompt(
@@ -49,6 +51,8 @@ def extract_descriptions(
 
         response = llm_generate(
             prompt,
+            model=experiment_config.model,
+            temperature=experiment_config.temperature,
             max_tokens=1000,
         )
 

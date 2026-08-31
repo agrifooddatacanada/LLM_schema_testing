@@ -2,12 +2,14 @@ from src.extract.models_entities import DiscoveredEntity
 from src.llm.client import llm_generate
 from src.llm.load_prompt import load_prompt
 from src.extract.json_utils import parse_json_response
+from evaluation.models_experiment_config import ExperimentConfig
 
 def collect_entities(
     readme_profile,
     tabular_profile,
     *,
     prompt_set: str,
+    experiment_config: ExperimentConfig
 ) -> list:
 
     ### Build Column Text
@@ -29,6 +31,8 @@ def collect_entities(
     print("sending to LLM to search for entities")
     response=llm_generate(
         prompt,
+        model=experiment_config.model,
+        temperature=experiment_config.temperature,
         max_tokens=1000
     )
 

@@ -1,0 +1,5 @@
+{
+    "name": "default",
+    "model": "Qwen2.5-Omni-7B-Q4_K_M",
+    "temperature": 0.0
+}

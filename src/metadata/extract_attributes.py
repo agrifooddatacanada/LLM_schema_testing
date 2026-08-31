@@ -1,24 +1,26 @@
 from src.extract.models_column_context import ColumnContext
-from src.metadata.models_unit import UnitMetadata
+from src.metadata.models_attribute import AttributeMetadata
 
 from src.extract.json_utils import parse_json_response
 from src.llm.client import llm_generate
 from src.llm.load_prompt import load_prompt
 from evaluation.models_experiment_config import ExperimentConfig
+from evaluation.attribute_utils import sanitize_attribute
 
-def extract_units(
+
+def extract_attributes(
     contexts: list[ColumnContext],
     *,
     prompt_set: str,
-    experiment_config: ExperimentConfig
-    ) -> list [UnitMetadata]:
-    
+    experiment_config: ExperimentConfig,
+) -> list[AttributeMetadata]:
+
     template = load_prompt(
         prompt_set,
-        "extract_units.txt",
-    )
+        "extract_attributes.txt",
+        )
 
-    units = []
+    results = []
 
     for context in contexts:
 
@@ -54,13 +56,15 @@ def extract_units(
             max_tokens=300,
         )
 
-        unit_data = parse_json_response(response)
+        data = parse_json_response(response)
 
-        units.append(
-            UnitMetadata(
+        results.append(
+            AttributeMetadata(
                 column_name=context.column_profile.column_name,
-                unit=unit_data["unit"],
+                attribute=sanitize_attribute(
+                    data["attribute"],
+                ),
             )
         )
 
-    return units
+    return results

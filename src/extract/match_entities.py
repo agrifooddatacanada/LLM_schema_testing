@@ -1,6 +1,7 @@
 from src.extract.models_column_match import ColumnMatch
 from src.extract.json_utils import parse_json_response
 from src.llm.client import llm_generate
+from evaluation.models_experiment_config import ExperimentConfig
 from src.llm.load_prompt import load_prompt
 
 def match_entities(
@@ -10,6 +11,7 @@ def match_entities(
         *,
         prompt_set: str,
         output_dir,
+        experiment_config: ExperimentConfig
     ) -> list:
 
     template = load_prompt(
@@ -42,6 +44,8 @@ def match_entities(
         print(f"Sending to LLM for entity: {entity.name} to match column name")
         response=llm_generate(
             prompt,
+            model=experiment_config.model,
+            temperature=experiment_config.temperature,
             max_tokens=1000
         )
         

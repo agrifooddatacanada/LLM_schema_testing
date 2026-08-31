@@ -14,15 +14,15 @@ client = Anthropic(
 def llm_generate(
     prompt: str,
     *,
-    model: str | None = None,
+    model: str,
     temperature: float = 0.0,
     max_tokens: int=1000
 ) -> str:
 
     response = client.messages.create(
-        model=model or os.getenv("ANTHROPIC_MODEL"),
+        model=model,
         temperature=temperature,
-                max_tokens=max_tokens,
+        max_tokens=max_tokens,
         messages=[
             {
                 "role": "user",
