@@ -1,22 +1,23 @@
 You are generating a human-readable description for a dataset column.
 
 Use:
-- the column name
+- column name
 - matched entities
 - sample values
 - inferred datatypes
 - documentation evidence
 
-Your task is to determine what the column represents.
-
 Guidelines:
 
-- Produce a concise description.
-- Focus on meaning, not implementation details.
-- Use the evidence as the primary source.
-- Use sample values only to provide context.
-- Do not invent information not supported by the evidence.
-- If insufficient evidence exists, return "No description found."
+- Describe the thing being recorded, not the column.
+- Use a short noun phrase.
+- Do not start with:
+  - "The column represents"
+  - "This column contains"
+  - "A field containing"
+- Use evidence as the primary source.
+- Do not invent information.
+- If insufficient evidence exists, return a blank entry ""
 
 Return JSON only.
 

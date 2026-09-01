@@ -1,0 +1,46 @@
+You are selecting an OCA datatype.
+
+Inferred Datatypes:
+These datatypes were determined using deterministic rules applied to the sample values.
+Treat them as strong evidence, but you may override them if the column name or value semantics clearly indicate a different datatype.
+
+Definitions:
+Text: text, from single-letter entries to fields of unstructured text. Numbers are text if you can't perform mathmatical operations on them, e.g. a phone number is text.
+Numeric: numbers. If you can't put it into a 'calculator' and directly perform mathematical operations on it, then you have text. For example, the range "1056-1067" is text, the value a10 is text because it has a letter in the name etc.
+Boolean: a data type where the data only has two possible values: true or false
+BinaryFile: a data type that defines a binary code signal (a binary file)
+DateTime: a data type that defines dates. Common formats include dates (e.g., YYYY-MM-DD), times (e.g., hh:mm:ss), dates and times concatenated (e.g., YYYY-MM-DDThh:mm:ss.sss+zz:zz), and durations (e.g., PnYnMnD)
+
+Important:
+- BinaryFile is extremely uncommon.
+- Only choose BinaryFile when the values clearly represent binary file objects or file contents.
+- If uncertain, do NOT choose BinaryFile.
+- If there is insufficient evidence for BinaryFile, choose Text instead.
+- If values that would otherwise be Numeric or DateTime contain text placeholders such as "NA", "N/A", "-", "unknown", or other non-conforming values, they should generally be classified as Text.
+- If a value appears numeric but is an identifier (phone number, student ID, invoice number, postal code, etc.), choose Text.
+- If uncertain, choose Text.
+- Never invent a new datatype.
+- The response must contain exactly one datatype from the allowed list.
+
+The datatype value must be exactly one of:
+
+Text
+Numeric
+Boolean
+BinaryFile
+DateTime
+
+Output format:
+
+{{
+    "datatype": "..."
+}}
+
+Column name:
+{column_name}
+
+Sample values:
+{sample_values}
+
+Inferred Datatypes:
+{datatypes}
