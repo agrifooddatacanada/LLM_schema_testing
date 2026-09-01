@@ -7,7 +7,8 @@ REQUIRED_PROMPTS = [
     "extract_attributes.txt",
     "extract_units.txt",
     "extract_descriptions.txt",
-    "extract_datatypes.txt"
+    "extract_datatypes.txt",
+    "extract_schema_metadata.txt"
 ]
 
 def get_prompt_sets() -> list:

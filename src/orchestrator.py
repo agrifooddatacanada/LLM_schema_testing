@@ -119,6 +119,7 @@ def run_pipeline(
     )
 
     return PipelineResult(
+        readme_profile=readme_profile,
         entities=entities,
         evidence=all_evidence,
         matches=matches,
@@ -127,9 +128,15 @@ def run_pipeline(
 
 
 if __name__ == "__main__":
+    experiment_config = ExperimentConfig(
+        name="manual",
+        model="Qwen2.5-Omni-7B-Q4_K_M",
+        temperature=0.0,
+    )
+
     run_pipeline(
-        Path("data") / "input" / "test_data" / "cfia_vibrio_data_public.csv",
-        Path("data") / "input" / "test_data" / "READMEvib.txt",
+        tabular_file=Path("data") / "input" / "test_data" / "cfia_vibrio_data_public.csv",
+        readme_file=Path("data") / "input" / "test_data" / "READMEvib.txt",
         output_dir=Path("data/intermediate"),
         experiment_config=experiment_config,
     )

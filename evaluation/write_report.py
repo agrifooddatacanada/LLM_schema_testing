@@ -33,10 +33,12 @@ def write_report(
     lines.append(f"- Temperature: {experiment_config.temperature}")
     lines.append("")
 
-    lines.append("## Summary")
+    lines.append(f"Entities: {len(result.entities)}")
+    lines.append(f"Evidence Records: {len(result.evidence)}")
+    lines.append(f"Matches: {len(result.matches)}")
     lines.append("")
 
-    lines.append(f"Entities: {len(result.entities)}")
+    lines.append("## Schema Metadata")
     lines.append(f"Evidence Records: {len(result.evidence)}")
     lines.append(f"Matches: {len(result.matches)}")
     lines.append("")

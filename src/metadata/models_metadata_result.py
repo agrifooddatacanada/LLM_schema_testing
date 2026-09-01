@@ -12,3 +12,4 @@ class MetadataResult:
     units: list[UnitMetadata] = field(default_factory=list)
     attributes: list[AttributeMetadata] = field(default_factory=list)
     datatypes: list[DatatypeMetadata] = field(default_factory=list)
+    schema_metadata: SchemaMetadata | None = None

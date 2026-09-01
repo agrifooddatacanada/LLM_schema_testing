@@ -24,6 +24,37 @@ def write_runs_report(
 
         lines.append(f"# Dataset: {escape_markdown(dataset_name)}")
         lines.append("")
+        lines.append("## Schema Metadata")
+        lines.append("")
+        lines.append(
+            "| Config | Model | Temperature | Prompt Set | Title | Description |"
+        )
+        lines.append(
+            "|--------|-------|-------------|------------|-------|-------------|"
+        )
+
+        for result in results:
+
+            if result.dataset_name != dataset_name:
+                continue
+
+            title = ""
+            description = ""
+
+            if result.metadata.schema_metadata:
+                title = result.metadata.schema_metadata.title
+                description = result.metadata.schema_metadata.description
+
+            lines.append(
+                f"| {escape_markdown(result.experiment_config.name)} "
+                f"| {escape_markdown(result.experiment_config.model)} "
+                f"| {result.experiment_config.temperature} "
+                f"| {escape_markdown(result.prompt_set)} "
+                f"| {escape_markdown(title)} "
+                f"| {escape_markdown(description)} |"
+            )
+
+        lines.append("")
 
         column_names = set()
 

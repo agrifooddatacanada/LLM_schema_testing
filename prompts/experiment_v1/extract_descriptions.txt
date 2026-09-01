@@ -10,13 +10,17 @@ Use:
 Guidelines:
 
 - Describe the thing being recorded, not the column.
-- Use a short noun phrase.
+- Use a concise human-readable description.
+- Prefer descriptions of 3 to 50 words.
+- Include distinguishing context when supported by evidence.
+- Use evidence as the primary source.
+- Sample values may help clarify meaning when evidence is limited.
+- Do not invent information.
+- Do not repeat the column name unless needed for clarity.
 - Do not start with:
   - "The column represents"
   - "This column contains"
   - "A field containing"
-- Use evidence as the primary source.
-- Do not invent information.
 - If insufficient evidence exists, return a blank entry ""
 
 Return JSON only.

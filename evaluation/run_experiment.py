@@ -1,5 +1,6 @@
 from datetime import datetime
 from pathlib import Path
+import json
 from evaluation.collect_prompts import get_prompt_sets
 from evaluation.collect_evaluation_datasets import get_datasets
 from evaluation.collect_experiment_configs import get_experiment_configs
@@ -10,6 +11,8 @@ from evaluation.csv_runs_report_writer import write_runs_csv
 from src.metadata.run_metadata_pipeline import run_metadata_pipeline
 from evaluation.models_experiment_result import ExperimentResult
 from evaluation.markdown_runs_report_writer import write_runs_report
+from src.schemas.oca.generate_oca_schema import generate_oca_schema
+from evaluation.csv_runs_schema_report_writer import write_schema_csv
 
 prompt_sets = get_prompt_sets()
 dataset_sets = get_datasets()
@@ -62,6 +65,8 @@ for experiment_config in experiment_configs:
 
             metadata_result = run_metadata_pipeline(
                 result.contexts,
+                dataset_name=dataset.name,
+                readme_profile=result.readme_profile,
                 prompt_set=prompt_set,
                 experiment_config=experiment_config,
             )
@@ -94,53 +99,30 @@ for experiment_config in experiment_configs:
                 experiment_config=experiment_config,
             )
 
+            schema = generate_oca_schema(
+                metadata_result,
+                result.contexts,
+            )
 
-print("\nEXPERIMENT RESULTS")
+            schema_file = output_dir / f"{safe_filename(dataset.name)}_oca_package_schema.json"
 
-for result in all_results:
+            with open(schema_file, "w", encoding="utf-8") as f:
+                json.dump(schema, f, indent=2)
 
-    print("\n====================")
-    print(f"Dataset: {result.dataset_name}")
-    print(f"Prompt: {result.prompt_set}")
+            print(f"Schema written to {schema_file}")
 
-    print("\nDescriptions:")
-
-    for description in result.metadata.descriptions:
-        print(
-            f"  {description.column_name}: "
-            f"{description.description}"
-        )
-
-    print("\nUnits:")
-
-    for unit in result.metadata.units:
-        print(
-            f"  {unit.column_name}: "
-            f"{unit.unit}"
-        )
-
-    print("\nAttributes:")
-
-    for attribute in result.metadata.attributes:
-        print(
-            f"  {attribute.column_name}: "
-            f"{attribute.attribute}"
-        )
-
-    print("\nDatatype:")
-
-    for datatype in result.metadata.datatypes:
-        print(
-            f"  {datatype.column_name}: "
-            f"{datatype.datatype}"
-        )
 
 write_runs_report(
     all_results,
-    run_root / "comparison_report.md",
+    run_root / "schema_contents_report.md",
 )
 
 write_runs_csv(
     all_results,
-    run_root / "comparison_report.csv",
+    run_root / "schema_columns_report.csv",
     )
+
+write_schema_csv(
+    all_results,
+    run_root / "schema_metadata_report.csv",
+)

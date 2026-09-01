@@ -5,11 +5,14 @@ from src.metadata.extract_descriptions import extract_descriptions
 from src.metadata.extract_units import extract_units
 from src.metadata.extract_attributes import extract_attributes
 from src.metadata.extract_datatypes import extract_datatypes
+from src.metadata.extract_schema_metadata import extract_schema_metadata
 from evaluation.collect_experiment_configs import get_experiment_configs
 
 def run_metadata_pipeline(
     contexts: list[ColumnContext],
     *,
+    dataset_name: str,
+    readme_profile: ReadmeProfile,
     prompt_set: str,
     experiment_config: ExperimentConfig
 ) -> MetadataResult:
@@ -35,6 +38,17 @@ def run_metadata_pipeline(
         experiment_config=experiment_config,
     )
 
+    schema_metadata = extract_schema_metadata(
+        dataset_name=dataset_name,
+        readme_profile=readme_profile,
+        column_names=[
+            context.column_profile.column_name
+            for context in contexts
+        ],
+        prompt_set=prompt_set,
+        experiment_config=experiment_config,
+    )
+
     datatypes = extract_datatypes(
         contexts,
         prompt_set=prompt_set,
@@ -46,4 +60,6 @@ def run_metadata_pipeline(
         units=units,
         attributes=attributes,
         datatypes=datatypes,
+        schema_metadata=schema_metadata,
     )
+
