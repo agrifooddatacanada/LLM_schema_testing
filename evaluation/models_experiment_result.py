@@ -8,3 +8,4 @@ class ExperimentResult:
     prompt_set: str
     experiment_config: ExperimentConfig
     metadata: MetadataResult
+    elapsed_seconds: float

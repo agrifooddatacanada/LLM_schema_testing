@@ -27,10 +27,10 @@ def write_runs_report(
         lines.append("## Schema Metadata")
         lines.append("")
         lines.append(
-            "| Config | Model | Temperature | Prompt Set | Title | Description |"
+            "| Config | Model | Temperature | Prompt Set | Title | Description | Elapsed Seconds |"
         )
         lines.append(
-            "|--------|-------|-------------|------------|-------|-------------|"
+            "|--------|-------|-------------|------------|-------|-------------|-------------|"
         )
 
         for result in results:
@@ -40,10 +40,12 @@ def write_runs_report(
 
             title = ""
             description = ""
+            elapsed_seconds = ""
 
             if result.metadata.schema_metadata:
                 title = result.metadata.schema_metadata.title
                 description = result.metadata.schema_metadata.description
+                elapsed_seconds = result.elapsed_seconds
 
             lines.append(
                 f"| {escape_markdown(result.experiment_config.name)} "
@@ -51,7 +53,8 @@ def write_runs_report(
                 f"| {result.experiment_config.temperature} "
                 f"| {escape_markdown(result.prompt_set)} "
                 f"| {escape_markdown(title)} "
-                f"| {escape_markdown(description)} |"
+                f"| {escape_markdown(description)} "
+                f"| {elapsed_seconds:.2f} seconds"
             )
 
         lines.append("")

@@ -188,35 +188,36 @@ Datasets beginning with `_` are ignored.
 ExperimentResult
 ├── Dataset Name
 ├── Prompt Set
+├── Elapsed Seconds
 ├── ExperimentConfig
 │   ├── Name
 │   ├── Model
 │   └── Temperature
 │
 └── MetadataResult
-        ├── SchemaMetadata
-        │ ├── Title
-        │ └── Description
-        |
-        ├── Descriptions
-        │   └── DescriptionMetadata
-        │       ├── Column Name
-        │       └── Description
-        │
-        ├── Units
-        │   └── UnitMetadata
-        │       ├── Column Name
-        │       └── Unit
-        │
-        ├── Attributes
-        │   └── AttributeMetadata
-        │       ├── Column Name
-        │       └── Attribute
-        │
-        └── Datatypes
-            └── DatatypeMetadata
-                ├── Column Name
-                └── Datatype
+    ├── SchemaMetadata
+    │   ├── Title
+    │   └── Description
+    │
+    ├── Descriptions
+    │   └── DescriptionMetadata
+    │       ├── Column Name
+    │       └── Description
+    │
+    ├── Units
+    │   └── UnitMetadata
+    │       ├── Column Name
+    │       └── Unit
+    │
+    ├── Attributes
+    │   └── AttributeMetadata
+    │       ├── Column Name
+    │       └── Attribute
+    │
+    └── Datatypes
+        └── DatatypeMetadata
+            ├── Column Name
+            └── Datatype
 ```
 
 ```text

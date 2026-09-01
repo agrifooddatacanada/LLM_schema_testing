@@ -1,6 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 import json
+import time
 from evaluation.collect_prompts import get_prompt_sets
 from evaluation.collect_evaluation_datasets import get_datasets
 from evaluation.collect_experiment_configs import get_experiment_configs
@@ -37,6 +38,8 @@ for experiment_config in experiment_configs:
 
         for dataset in dataset_sets:
 
+            start_time = time.perf_counter()
+
             print(
                 f"Running config={experiment_config.name} "
                 f"dataset={dataset.name} "
@@ -71,12 +74,17 @@ for experiment_config in experiment_configs:
                 experiment_config=experiment_config,
             )
 
+            elapsed_seconds = time.perf_counter() - start_time
+
+            print(f"Metadata pipeline took {elapsed_seconds:.2f} seconds")
+
             all_results.append(
                 ExperimentResult(
                     dataset_name=dataset.name,
                     prompt_set=prompt_set,
                     experiment_config=experiment_config,
                     metadata=metadata_result,
+                    elapsed_seconds=elapsed_seconds,
                 )
             )
 

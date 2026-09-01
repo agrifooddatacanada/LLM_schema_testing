@@ -18,6 +18,7 @@ def write_schema_csv(
                 "prompt_set",
                 "title",
                 "description",
+                "elapsed_seconds",
             ],
         )
 
@@ -41,5 +42,6 @@ def write_schema_csv(
                     "prompt_set": result.prompt_set,
                     "title": title,
                     "description": description,
+                    "elapsed_seconds": result.elapsed_seconds,
                 }
             )
