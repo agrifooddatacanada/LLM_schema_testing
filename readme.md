@@ -79,7 +79,6 @@ Example:
 ```text
 ANTHROPIC_API_KEY=...
 ANTHROPIC_BASE_URL=...
-ANTHROPIC_MODEL=...
 ```
 
 ---
@@ -182,27 +181,4 @@ or
 
 ```bash
 pip3 install -r requirements.txt
-```
-
-### Verify Environment Variables
-
-You can verify that your `.env` file is being loaded correctly:
-
-```bash
-python -m src.test_llm_connection
-```
-
-or
-
-```bash
-python3 -m src.test_llm_connection
-```
-
-Expected output should resemble:
-
-```text
-API_KEY loaded: True
-BASE_URL = 'https://...'
-MODEL = '...'
-Connection successful
 ```

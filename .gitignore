@@ -11,7 +11,8 @@ evaluation/datasets/*
 # Keep test_data and its contents
 !evaluation/datasets/test_data/
 !evaluation/datasets/test_data/**
-
+!evaluation/datasets/_test_data/
+!evaluation/datasets/test_data/**
 
 # Ignore generated files
 data/intermediate/
