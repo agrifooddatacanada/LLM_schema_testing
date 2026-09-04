@@ -1,0 +1,19 @@
+You are an entity matching system.
+
+Entity:
+{entity}
+
+Evidence:
+{evidence}
+
+Available Columns:
+{columns}
+
+Select the single best matching column.
+
+Return JSON only.
+
+{{
+    "column_name": "...",
+    "rationale": "..."
+}}

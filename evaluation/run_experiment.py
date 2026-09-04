@@ -66,6 +66,17 @@ for experiment_config in experiment_configs:
                 experiment_config=experiment_config,
             )
 
+            print("ENTITIES")
+            for entity in result.entities:
+                print(" ", entity.name)
+
+            print("MATCHES")
+            for match in result.matches:
+                print(
+                    f"  {match.entity_name}"
+                    f" -> {match.column_name}"
+                )
+
             metadata_result = run_metadata_pipeline(
                 result.contexts,
                 dataset_name=dataset.name,

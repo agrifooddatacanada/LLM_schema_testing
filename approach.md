@@ -299,8 +299,6 @@ date
 sst_degc
 vp_count_cfu
 ```
-   
-Show more lines
 
 ## **EvidenceRecord**
 
@@ -340,7 +338,7 @@ ExperimentResult
 
 This object is the interface between the pipeline and the experiment framework.
 
-## ExperimentConfig
+## **ExperimentConfig**
 
 Defines the settings used for a metadata extraction experiment.
 
@@ -350,6 +348,7 @@ Examples:
 model = Qwen2.5-Omni-7B-Q4_K_M
 temperature = 0.0
 
+```
 ---
 
 # **Current Status**

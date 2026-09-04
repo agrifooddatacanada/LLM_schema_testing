@@ -1,0 +1,183 @@
+You are extracting evidence from a document.
+
+Document:
+
+{document}
+
+Target Entity:
+
+{entity}
+
+TASK
+
+Find text that directly documents the target entity.
+
+The target entity is usually a dataset column name, variable name, field name, or documented concept.
+
+STEP 1
+
+Look for the exact target entity name in the document.
+
+STEP 2
+
+If you find the target entity name, extract the complete description associated with that occurrence.
+
+Include:
+
+- definitions
+- descriptions
+- notes
+- units
+- code meanings
+- explanatory text
+
+that belong to the target entity.
+
+STEP 3
+
+Return the extracted record.
+
+MATCHING RULES
+
+The target entity name must appear exactly in the evidence_text.
+
+Examples:
+
+Target Entity:
+Sample
+
+Valid:
+Sample - Isolate identifier.
+
+Invalid:
+Samples were collected from multiple locations.
+
+Invalid:
+Source - Origin of the sample.
+
+---
+
+Target Entity:
+Source
+
+Valid:
+Source - Origin of the sample.
+
+Invalid:
+DATA SOURCE:
+This collection includes a baseline isolate...
+
+---
+
+Target Entity:
+date
+
+Valid:
+date: ISO-formatted date object
+
+Invalid:
+collection_date
+
+Invalid:
+sampling date range
+
+Invalid:
+DATE OF DATA COLLECTION
+
+ENTITY BOUNDARIES
+
+When a variable dictionary or column description section exists:
+
+Sample - Sample identifier
+Source - Sample source
+Call - Genotype call
+
+If the target entity is Sample:
+
+Return:
+Sample - Sample identifier
+
+Do NOT include:
+Source - Sample source
+
+Do NOT include:
+Call - Genotype call
+
+MULTI-LINE RECORDS
+
+If a description continues onto the next line, include all adjacent lines that belong to the same entity.
+
+Example:
+
+Sample - Isolate identifier.
+          Matches isolate designations
+          used in Table A2.1.
+
+Return all three lines.
+
+DO NOT
+
+- Do not summarize.
+- Do not rewrite.
+- Do not infer.
+- Do not classify.
+- Do not return related concepts.
+- Do not return evidence for neighboring entities.
+- Do not return an entire section when a single record is sufficient.
+- Do not generate evidence that is not present in the document.
+
+IMPORTANT
+
+Before returning a record, verify:
+
+1. The target entity name appears in the evidence_text.
+2. The evidence directly describes the target entity.
+
+If either check fails, return [].
+
+NO MATCH
+
+If the target entity does not appear in the document, return [].
+
+OUTPUT FORMAT
+
+Return ONLY valid JSON.
+
+[
+  {{
+    "evidence_text": "...",
+    "source_section": "..."
+  }}
+]
+
+JSON RULES
+
+- No markdown.
+- No explanations.
+- No comments.
+- No trailing commas.
+- Use double quotes.
+- Output must be valid for Python json.loads().
+
+EXAMPLE
+
+Document:
+
+# Metadata
+
+date: ISO-formatted date object; date Vp test was taken
+
+vp_count_cfu: Vp test result in CFU/mL or MPN/g
+
+Target Entity:
+
+date
+
+Output:
+
+[
+  {{
+    "evidence_text": "date: ISO-formatted date object; date Vp test was taken",
+    "source_section": "Metadata"
+  }}
+]

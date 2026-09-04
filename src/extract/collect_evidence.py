@@ -39,7 +39,7 @@ def collect_evidence(
         try:
             evidence_data = parse_json_response(response)
 
-        except Exception:
+        except Exception as e:
             with open(
                 output_dir / "failed_evidence_responses.txt", 
                 "a", 
