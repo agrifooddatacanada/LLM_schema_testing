@@ -14,6 +14,7 @@ from evaluation.models_experiment_result import ExperimentResult
 from evaluation.markdown_runs_report_writer import write_runs_report
 from src.schemas.oca.generate_oca_schema import generate_oca_schema
 from evaluation.csv_runs_schema_report_writer import write_schema_csv
+from evaluation.load_reference_metadata import load_reference_metadata
 
 prompt_sets = get_prompt_sets()
 dataset_sets = get_datasets()
@@ -28,9 +29,10 @@ run_root = (
     / run_id
 )
 
-print(f"Experiment Run: {run_id}")
+print(f"\nExperiment Run: {run_id}\n")
 
 all_results = []
+reference_datasets_loaded = set()
 
 for experiment_config in experiment_configs:
 
@@ -38,14 +40,41 @@ for experiment_config in experiment_configs:
 
         for dataset in dataset_sets:
 
-            start_time = time.perf_counter()
-
+            print("\n" + "=" * 80)
             print(
-                f"Running config={experiment_config.name} "
+                f"RUNNING "
                 f"dataset={dataset.name} "
-                f"prompt_set={prompt_set}"
+                f"prompt={prompt_set} "
+                f"model={experiment_config.name}"
             )
+            print("=" * 80)
 
+            if (
+                dataset.reference_schema_file
+                and dataset.name not in reference_datasets_loaded
+            ):
+                reference_metadata = load_reference_metadata(
+                    dataset.reference_schema_file
+                )
+
+                reference_result = ExperimentResult(
+                    dataset_name=dataset.name,
+                    prompt_set="reference",
+                    experiment_config=ExperimentConfig(
+                        name="human",
+                        model="human",
+                        temperature=0.0,
+                    ),
+                    metadata=reference_metadata,
+                    elapsed_seconds=0.0,
+                    is_reference=True,
+                )
+
+                all_results.append(reference_result)
+                reference_datasets_loaded.add(dataset.name)
+            
+            start_time = time.perf_counter()
+            
             output_dir = (
                 run_root
                 / experiment_config.name
@@ -66,16 +95,13 @@ for experiment_config in experiment_configs:
                 experiment_config=experiment_config,
             )
 
-            print("ENTITIES")
-            for entity in result.entities:
-                print(" ", entity.name)
+            print(
+                f"Entities: {len(result.entities)}"
+            )
 
-            print("MATCHES")
-            for match in result.matches:
-                print(
-                    f"  {match.entity_name}"
-                    f" -> {match.column_name}"
-                )
+            print(
+                f"Matches: {len(result.matches)}"
+            )
 
             metadata_result = run_metadata_pipeline(
                 result.contexts,
@@ -140,6 +166,13 @@ write_runs_csv(
     all_results,
     run_root / "schema_columns_report.csv",
     )
+
+for result in all_results:
+    if result.is_reference:
+        print(
+            "CSV HUMAN TITLE:",
+            result.metadata.schema_metadata.title
+        )
 
 write_schema_csv(
     all_results,

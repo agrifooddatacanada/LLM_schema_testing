@@ -6,3 +6,4 @@ class Dataset:
     name: str
     tabular_file: Path
     readme_file: Path
+    reference_schema_file: Path | None = None

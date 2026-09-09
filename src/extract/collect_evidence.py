@@ -21,6 +21,8 @@ def collect_evidence(
         "extract_evidence.txt",
     )
 
+    print(f"\nCOLLECTING EVIDENCE")
+
     for entity in entities:
 
         prompt = template.format(
@@ -28,7 +30,6 @@ def collect_evidence(
             entity=entity.name
         )
 
-        print(f"\nSending to LLM for entity: {entity.name}")
         response=llm_generate(
             prompt,
             model=experiment_config.model,
@@ -50,6 +51,12 @@ def collect_evidence(
                 f.write(response)
             continue
 
+        print(
+            f"[{readme_profile.source_file}] "
+            f"[{entity.name}] "
+            f"{len(evidence_data)} evidence items"
+        )
+
 
         for item in evidence_data:
             evidence=EvidenceRecord(
@@ -57,9 +64,6 @@ def collect_evidence(
                 evidence_text=item["evidence_text"],
                 source_section=item["source_section"],
                 source_file=readme_profile.source_file
-            )
-            print(
-                f"Found {len(evidence_data)} evidence items for {entity.name}"
             )
             
             all_evidence.append(

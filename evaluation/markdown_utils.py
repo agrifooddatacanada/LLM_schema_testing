@@ -9,6 +9,5 @@ def escape_markdown(text: str) -> str:
         .replace("|", "\\|")
         .replace("#", "\\#")
         .replace("*", "\\*")
-        .replace("_", "\\_")
         .replace("`", "\\`")
     )

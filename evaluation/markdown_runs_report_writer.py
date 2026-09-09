@@ -40,11 +40,17 @@ def write_runs_report(
 
             title = ""
             description = ""
-            elapsed_seconds = ""
+            elapsed_seconds = 0.0
 
             if result.metadata.schema_metadata:
                 title = result.metadata.schema_metadata.title
-                description = result.metadata.schema_metadata.description
+
+                description = (
+                    result.metadata.schema_metadata.description
+                    .replace("\r\n", "<br><br>")
+                    .replace("\n", "<br>")
+                )
+
                 elapsed_seconds = result.elapsed_seconds
 
             lines.append(
@@ -136,7 +142,7 @@ def write_runs_report(
                     f"| {escape_markdown(result.experiment_config.model)} "
                     f"| {result.experiment_config.temperature} "
                     f"| {escape_markdown(result.prompt_set)} "
-                    f"| {escape_markdown(attribute_text)} "
+                    f"| `{attribute_text}` "
                     f"| {escape_markdown(description_text)} "
                     f"| {escape_markdown(unit_text)} "
                     f"| {escape_markdown(datatype_text)} |"

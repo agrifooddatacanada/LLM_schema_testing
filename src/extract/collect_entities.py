@@ -28,7 +28,7 @@ def collect_entities(
         columns=column_text
     )
 
-    print("sending to LLM to search for entities")
+    print("\nsending to LLM to search for entities")
     response=llm_generate(
         prompt,
         model=experiment_config.model,

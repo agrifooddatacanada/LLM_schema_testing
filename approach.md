@@ -36,7 +36,7 @@ Evidence
     ↓
 Metadata
     ↓
-OCA Overlays
+OCA Package
 ```
 
 Every metadata assertion should be traceable to source documentation.
@@ -128,6 +128,12 @@ ColumnContext
 Metadata Extraction
     ↓
 MetadataResult
+
+MetadataResult
+    ↓
+generate_oca_schema()
+    ↓
+OCA Package
 ```
 ---
 
@@ -136,6 +142,15 @@ MetadataResult
 Experiments compare prompt sets across multiple datasets.
 
 ```text
+Dataset
+├── README
+├── Data
+└── Optional Reference Schema
+            ↓
+     MetadataResult
+            ↓
+ Reference ExperimentResult
+
 Experiment Config
 +
 Prompt Set
@@ -150,9 +165,8 @@ run_metadata_pipeline()
     ↓
 MetadataResult
     ↓
-ExperimentResult
-    ↓
-Reports
+Generated ExperimentResult
+``
 ```
 
 The experiment runner:
@@ -182,6 +196,41 @@ Datasets beginning with `_` are ignored.
 
 ---
 
+# Reference Schemas
+
+Datasets may optionally include a human-authored OCA package.
+
+```text
+evaluation/datasets/
+    dataset_name/
+        README.txt
+        data.csv
+        OCA_package.json
+```
+
+Reference schemas are loaded into the same MetadataResult structure used by generated metadata.
+
+This enables direct comparison between:
+
+```text
+Human-authored Schema
+        ↓
+MetadataResult
+
+Generated Schema
+        ↓
+MetadataResult
+```
+
+Reference schemas are represented as:
+```text
+ExperimentResult
+├── is_reference = True
+├── model = human
+└── prompt_set = reference
+```
+This allows human-authored schemas to participate in the existing reporting and evaluation framework.
+
 # **Key Data Models**
 
 ```text
@@ -189,6 +238,7 @@ ExperimentResult
 ├── Dataset Name
 ├── Prompt Set
 ├── Elapsed Seconds
+├── Is Reference
 ├── ExperimentConfig
 │   ├── Name
 │   ├── Model
@@ -264,7 +314,8 @@ PipelineResult
 Dataset
 ├── Name
 ├── Tabular File
-└── README File
+├── README File
+└── Reference Schema File (optional)
 ```
 
 ```text
@@ -363,6 +414,9 @@ Implemented:
 * Unit extraction
 * Datatype extraction
 * Metadata pipeline
+* OCA package generation
+* Reference OCA schema loading
+* Human schema ingestion
 * Experiment configurations
 * Experiment runner
 * Markdown reporting
@@ -370,9 +424,13 @@ Implemented:
 
 Next priorities:
 
-* Datatype extraction  
-* Code list extraction  
-* Ontology extraction  
+* List generation
+* Reference schema comparison
+* Attribute evaluation
+* Unit evaluation
+* Datatype evaluation
+* Code list extraction
+* Ontology extraction
 * Evaluation metrics
 
 Research question:

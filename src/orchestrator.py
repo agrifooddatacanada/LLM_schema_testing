@@ -35,6 +35,10 @@ def run_pipeline(
     output_dir: Path,
     experiment_config: ExperimentConfig,
 ) -> PipelineResult:
+    print(
+        f"ENTERING run_pipeline "
+        f"readme={readme_file}"
+    )
 
     ensure_directories()
     
@@ -68,13 +72,16 @@ def run_pipeline(
         output_dir / "entities.json"
         )
 
-    print("\nThe entities found in the Readme:")
+    print(
+        f"\nENTITIES "
+        f"dataset={Path(readme_file).parent.name}"
+    )
     for entity in entities:
-        print(entity.name)
+        print(
+            f"  [{Path(readme_file).parent.name}] "
+            f"{entity.name}"
+        )
 
-    # This code takes each entity and searches the readme with a prompt
-    # and generates evidence for each entity but does not classify what type 
-    # of evidence it has found.
     all_evidence=collect_evidence(
         readme_profile,
         entities,
@@ -88,16 +95,6 @@ def run_pipeline(
         output_dir / "evidence.json"
     )
 
-    #print("\nEvidence found:")
-
-    #for evidence in all_evidence:
-        #print("\n---")
-        #print("Entity:", evidence.entity_name)
-        #print("Evidence Text:", evidence.evidence_text)
-        #print("Evidence Section:", evidence.source_section)
-
-    # This code takes entities and tabular profile extracted from the data table
-    # and matches them to entities extracted from the readme text file
     matches = match_entities(
         entities,
         all_evidence,
@@ -116,6 +113,11 @@ def run_pipeline(
         matches,
         all_evidence,
         tabular_profile,
+    )
+
+    print(
+        f"\nLEAVING run_pipeline "
+        f"readme={readme_file}"
     )
 
     return PipelineResult(

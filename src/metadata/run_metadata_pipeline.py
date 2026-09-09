@@ -17,7 +17,7 @@ def run_metadata_pipeline(
     experiment_config: ExperimentConfig
 ) -> MetadataResult:
 
-    print("\n---")
+    print("\n--- run_metadata_pipeline ---")
     print("\n Sending to LLM for Metadata Extraction")
 
     descriptions = extract_descriptions(

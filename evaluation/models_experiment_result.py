@@ -9,3 +9,4 @@ class ExperimentResult:
     experiment_config: ExperimentConfig
     metadata: MetadataResult
     elapsed_seconds: float
+    is_reference: bool = False

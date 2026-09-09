@@ -35,14 +35,23 @@ def get_datasets() -> list:
                 }
             )
             continue
+        
+        reference_schema_file = (
+            folder / "OCA_package.json"
+        )
+
+        if not reference_schema_file.exists():
+            reference_schema_file = None
 
         datasets.append(
             Dataset(
                 name=folder.name,
                 tabular_file=folder / "data.csv",
                 readme_file=folder / "README.txt",
+                reference_schema_file=reference_schema_file,
             )
         )
+
 
     if validation_errors:
         lines = ["Dataset validation failed."]

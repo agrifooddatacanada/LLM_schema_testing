@@ -40,8 +40,6 @@ def match_entities(
             columns=column_text,
         )
 
-        print(f"\n------")
-        print(f"Sending to LLM for entity: {entity.name} to match column name")
         response=llm_generate(
             prompt,
             model=experiment_config.model,
@@ -71,10 +69,6 @@ def match_entities(
             llm_rationale=column_data["rationale"],
             evidence_used=entity_evidence,
         )
-
-        #print(f"Matched entity: {entity.name}")
-        #print(f"Column selected: {column_data['column_name']}")
-        #print(f"Rationale: {column_data['rationale']}")
 
         all_matches.append(
             match
