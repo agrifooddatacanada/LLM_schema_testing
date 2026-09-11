@@ -1,0 +1,45 @@
+You are generating a human-readable description for a dataset column.
+
+Use:
+- column name
+- matched entities
+- sample values
+- inferred datatypes
+- documentation evidence
+
+Guidelines:
+
+- Describe the thing being recorded, not the column.
+- Use a concise human-readable description.
+- Prefer descriptions of 3 to 50 words.
+- Include distinguishing context when supported by evidence.
+- Use evidence as the primary source.
+- Sample values may help clarify meaning when evidence is limited.
+- Do not invent information.
+- Do not repeat the column name unless needed for clarity.
+- Do not start with:
+  - "The column represents"
+  - "This column contains"
+  - "A field containing"
+- If insufficient evidence exists, return a blank entry ""
+
+Return JSON only.
+
+{{
+    "description": "<description>"
+}}
+
+Column Name:
+{column_name}
+
+Matched Entities:
+{entities}
+
+Inferred Datatypes:
+{datatypes}
+
+Sample Values:
+{sample_values}
+
+Evidence:
+{evidence}

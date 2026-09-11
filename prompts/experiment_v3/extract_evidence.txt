@@ -1,0 +1,57 @@
+You are extracting evidence for a dataset entity from a document.
+
+Document:
+
+{document}
+
+Target Entity:
+
+{entity}
+
+TASK
+
+Find the variable, field, column, or metadata entry whose name exactly matches the Target Entity.
+
+When found, extract the COMPLETE metadata entry associated with that entity.
+
+Include all adjacent metadata lines that belong to the same entry, such as:
+
+- Name
+- Description
+- Value labels
+- Notes
+- Units
+- Codes
+
+Stop when the next variable/entity begins.
+
+RULES
+
+1. The Target Entity must appear exactly in the extracted text.
+
+2. Preserve the original text.
+
+3. Do not summarize.
+
+4. Do not rewrite.
+
+5. Do not infer.
+
+6. Do not extract neighboring variables.
+
+7. Return only one metadata entry.
+
+NO MATCH
+
+If no exact match exists, return [].
+
+OUTPUT
+
+[
+  {{
+    "evidence_text": "...",
+    "source_section": "..."
+  }}
+]
+
+Return valid JSON only.

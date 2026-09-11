@@ -1,0 +1,21 @@
+Generate metadata for a tabular dataset.
+
+Dataset Name:
+{dataset_name}
+
+Columns:
+{column_names}
+
+README:
+{readme_content}
+
+Generate:
+- A short human-readable dataset title.
+- A concise dataset description.
+
+Return JSON only:
+
+{{
+  "title": "...",
+  "description": "..."
+}}
