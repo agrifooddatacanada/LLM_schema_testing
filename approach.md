@@ -16,9 +16,6 @@ Long-term outputs:
 
 Current focus:
 
-* Collect documentation evidence  
-* Match documentation concepts to dataset columns  
-* Extract metadata from that evidence  
 * Support prompt experimentation and human review
 
 ---
@@ -90,10 +87,12 @@ The pipeline remains stable while prompts and datasets vary.
 README
     ↓
 ReadmeProfile
+---
 
 Dataset
     ↓
 TabularProfile
+---
 
 ReadmeProfile
 +
@@ -102,6 +101,7 @@ TabularProfile
 Entity Discovery
     ↓
 DiscoveredEntity
+---
 
 DiscoveredEntity
 +
@@ -110,6 +110,7 @@ ReadmeProfile
 Evidence Collection
     ↓
 EvidenceRecord
+---
 
 EvidenceRecord
 +
@@ -118,6 +119,7 @@ TabularProfile
 Column Matching
     ↓
 ColumnMatch
+---
 
 ColumnMatch
 +
@@ -128,6 +130,7 @@ ColumnContext
 Metadata Extraction
     ↓
 MetadataResult
+---
 
 MetadataResult
     ↓
@@ -166,7 +169,6 @@ run_metadata_pipeline()
 MetadataResult
     ↓
 Generated ExperimentResult
-``
 ```
 
 The experiment runner:
@@ -192,7 +194,7 @@ Outputs include:
 * comparison reports  
 * CSV summaries
 
-Datasets beginning with `_` are ignored.
+Datasets and prompt sets beginning with `_` are ignored.
 
 ---
 
