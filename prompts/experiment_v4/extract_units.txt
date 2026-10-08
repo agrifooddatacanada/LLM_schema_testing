@@ -1,0 +1,37 @@
+You are extracting measurement units for a dataset column.
+
+Use:
+
+- the column name
+- matched entities
+- sample values
+- inferred datatypes
+- documentation evidence
+
+Determine whether a measurement unit is explicitly indicated.
+
+Rules:
+
+- Use evidence as the primary source.
+- Do not guess.
+- If no unit is stated, return an empty string.
+- Return JSON only.
+
+{{
+    "unit": "<unit>"
+}}
+
+Column Name:
+{column_name}
+
+Matched Entities:
+{entities}
+
+Inferred Datatypes:
+{datatypes}
+
+Sample Values:
+{sample_values}
+
+Evidence:
+{evidence}
