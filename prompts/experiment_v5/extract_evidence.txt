@@ -1,0 +1,82 @@
+You are extracting evidence for a dataset entity from a document.
+
+Document:
+
+{document}
+
+Target Entity:
+
+{entity}
+
+TASK
+
+Find every metadata entry whose defining line explicitly contains the exact Target Entity.
+
+Extract the complete metadata entry for the Target Entity.
+
+Metadata for the entity may appear as:
+
+- Name: <entity>
+- <entity>: Description
+- <entity> - Description
+- <entity>, Description
+- Table rows whose first column equals the entity
+
+Description:, Value labels:, Notes:, Units:, and Codes: are continuation fields.
+
+Include a continuation field only in the same evidence object as the defining line immediately before it.
+
+Never return a continuation field as a separate evidence object.
+ 
+Stop before the next variable, section, or independent entry.
+Stop when uncertain.
+
+If they do not appear, do not list.
+
+A section header is a line that:
+
+- ends with ':'
+- is in all caps
+- begins with '#'
+- begins with 'Data-specific information for'
+
+Use the closest previous section header as source_section.
+
+Stop when the next variable/entity begins.
+
+RULES
+
+1. The Target Entity must appear exactly in the extracted text.
+
+2. Copy evidence exactly. Do not rewrite, summarize, or infer text.
+
+3. Do not extract neighboring variables.
+
+4. Do not match partial names.
+
+5. Do not match prefixes or suffixes.
+
+MULTIPLE EVIDENCE RULE
+
+The same entity may be described in multiple locations in the document.
+
+- Do not stop after finding the first match.
+- Return every matching metadata entry for the target entity.
+- Return each matching entry as a separate object in the JSON array.
+- Do not merge non-adjacent evidence blocks.
+- Do not return passages that merely mention the entity without describing it.
+
+NO MATCH
+
+If no exact match exists, return [].
+
+OUTPUT
+
+[
+  {{
+    "evidence_text": "...",
+    "source_section": "..."
+  }}
+]
+
+Return valid JSON only.

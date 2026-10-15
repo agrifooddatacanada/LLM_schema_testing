@@ -73,6 +73,20 @@ def write_report(
             )
 
     lines.append("")
+    lines.append("## Columns Without Evidence")
+    lines.append("")
+
+    for context in result.contexts:
+
+        if not context.evidence:
+
+            lines.append(
+                f"- {escape_markdown(context.column_profile.column_name)}"
+            )
+
+    lines.append("")
+
+    lines.append("")
 
     lines.append("## Match Rationales")
     lines.append("")

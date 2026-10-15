@@ -21,6 +21,9 @@ def extract_units(
     units = []
 
     for context in contexts:
+        if not context.evidence:
+            continue
+
 
         evidence_text = "\n\n".join(
             record.evidence_text

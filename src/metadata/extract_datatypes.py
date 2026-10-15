@@ -29,38 +29,21 @@ def extract_datatypes(
 
     for context in contexts:
 
-        sample_values = "\n".join(
-            str(value)
-            for value in context.column_profile.sample_values[:5]
+        datatype = (
+            context.column_profile.inferred_datatypes[0]
+            if context.column_profile.inferred_datatypes
+            else "Text"
         )
-
-        prompt = template.format(
-            column_name=context.column_profile.column_name,
-            sample_values=sample_values,
-            datatypes=", ".join(
-                context.column_profile.inferred_datatypes
-            ),
-        )
-
-        response = llm_generate(
-            prompt,
-            model=experiment_config.model,
-            temperature=experiment_config.temperature,
-            max_tokens=300,
-        )
-
-        data = parse_json_response(response)
-
-        datatype=data.get("datatype","Text")
 
         if datatype not in ALLOWED_DATATYPES:
-            datatype="Text"
+            datatype = "Text"
+
 
         results.append(
             DatatypeMetadata(
                 column_name=context.column_profile.column_name,
                 datatype=datatype,
-                ),
             )
+        )
 
     return results

@@ -20,8 +20,8 @@ def build_column_contexts(
             if match.column_name == column.column_name
         ]
 
-        if not column_matches:
-            continue
+#        if not column_matches:
+#            continue
 
         column_evidence = []
 

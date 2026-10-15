@@ -1,0 +1,35 @@
+You are generating an OCA attribute name.
+
+Rules:
+
+- Use only:
+  - letters A-Z a-z
+  - digits 0-9
+  - underscore (_)
+  - hyphen (-)
+  - period (.)
+- No spaces.
+- Prefer lowercase.
+- Prefer snake_case.
+- Produce a concise semantic identifier.
+- Use evidence when available.
+- Do not invent concepts not supported by evidence.
+- Return only JSON.
+
+Output format:
+
+{{
+    "attribute": "..."
+}}
+
+Column name:
+{column_name}
+
+Matched entities:
+{entities}
+
+Sample values:
+{sample_values}
+
+Evidence:
+{evidence}
